@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { put } from '@vercel/blob';
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
@@ -14,7 +13,6 @@ const ContactForm = (id, setId) => {
     // for file upload as CV
   });
   
-  console.log(typeof setFormData);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -23,11 +21,6 @@ const ContactForm = (id, setId) => {
   };
 
   const handleFileChange = (e) => {
-    console.log(e.target.files);
-    const url = URL.createObjectURL(e.target.files[0])
-    console.log(url);
-    filename = e.target.files[0]
-    urlLink = url
     setFormData({ ...formData, cv: e.target.files[0] });
   };
 
@@ -35,13 +28,8 @@ const ContactForm = (id, setId) => {
     e.preventDefault();
     // Validate form fields
     // Submit the form 
-    
-    console.log(formData);
-    // setId(id + 1);
     localStorage.setItem('id', (localStorage.getItem('id'))?+localStorage.getItem('id')+1:1);
     localStorage.setItem(localStorage.getItem('id'), JSON.stringify(formData));
-    //storing CV in vercel blob
-    //clearing the data after storing
       const clearedObj = Object.fromEntries(
         Object.keys(formData).map(key => [key, null])
       );
@@ -50,14 +38,6 @@ const ContactForm = (id, setId) => {
       navigate('/submissions');
   };
 
-  // async function uploadFile(file) {
-  //   'use server';
-  //   const fileToUpload = file;
-  //   const blob = await put(fileToUpload.name, fileToUpload, {
-  //     access: 'public',
-  //   });
-  //   return blob;
-  // }
   return (
     <div className="container">
       <h1 className='multi'>
