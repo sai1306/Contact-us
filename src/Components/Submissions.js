@@ -1,25 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Data from './Data';
-function Submissions(){
+function Submissions(id){
     const [submissions, setSubmissions] = useState([])
-    useEffect( ()=>{
-        for(let i = 1;i<=localStorage.getItem('id');i++){
-            let obj = localStorage.getItem(i);
-            obj = JSON.parse(obj);
-            setSubmissions([...submissions, obj]);
-        }
-        console.log(submissions);
-    }, []);
+    var arr = Object.values(localStorage);
+    arr.shift();
+     for(let i = 0;i<arr.length;i++){
+        arr[i] = JSON.parse(arr[i]);
+    }
+    console.log(arr);
+    // arr.map((value, index)=>console.log(value))
     return(
         <>
         <div className='container'>
-            <ul>
-                {submissions.map((submission, index)=>{
-                    <li key={index}>
-                        <Data submission={submission} />
-                    </li>
-                })}
-            </ul>
+            <Data data={arr}/>
         </div>
         </>
     );

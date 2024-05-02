@@ -36,3 +36,9 @@
     transform: rotate(360deg);
   }
 }
+
+.multi{
+  color: transparent;
+  background: radial-gradient(circle, blue, red);
+  background-clip: text;
+}

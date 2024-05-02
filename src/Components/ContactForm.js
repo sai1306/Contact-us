@@ -3,8 +3,9 @@ import { put } from '@vercel/blob';
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
-const ContactForm = () => {
-  const [id, SetId] = useState();
+const ContactForm = (id, setId) => {
+  var filename = ""
+  var urlLink = ""
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -12,7 +13,8 @@ const ContactForm = () => {
     cv: null,
     // for file upload as CV
   });
-
+  
+  console.log(typeof setFormData);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -21,6 +23,11 @@ const ContactForm = () => {
   };
 
   const handleFileChange = (e) => {
+    console.log(e.target.files);
+    const url = URL.createObjectURL(e.target.files[0])
+    console.log(url);
+    filename = e.target.files[0]
+    urlLink = url
     setFormData({ ...formData, cv: e.target.files[0] });
   };
 
@@ -30,18 +37,12 @@ const ContactForm = () => {
     // Submit the form 
     
     console.log(formData);
-    
-    if(!localStorage.getItem('id'))
-        {
-            localStorage.setItem('id', 1);
-        }
-    else{
-            localStorage.setItem('id', localStorage.getItem('id')+1);
-        }
+    // setId(id + 1);
+    localStorage.setItem('id', (localStorage.getItem('id'))?+localStorage.getItem('id')+1:1);
     localStorage.setItem(localStorage.getItem('id'), JSON.stringify(formData));
     //storing CV in vercel blob
     //clearing the data after storing
-    const clearedObj = Object.fromEntries(
+      const clearedObj = Object.fromEntries(
         Object.keys(formData).map(key => [key, null])
       );
       // Update state with the new object
@@ -49,17 +50,19 @@ const ContactForm = () => {
       navigate('/submissions');
   };
 
-//   async function uploadImage(formData) {
-//     'use server';
-//     const imageFile = formData.cv;
-//     const blob = await put(imageFile.name, imageFile, {
-//       access: 'public',
-//     });
-//     revalidatePath('/');
-//     return blob;
-//   }
+  // async function uploadFile(file) {
+  //   'use server';
+  //   const fileToUpload = file;
+  //   const blob = await put(fileToUpload.name, fileToUpload, {
+  //     access: 'public',
+  //   });
+  //   return blob;
+  // }
   return (
     <div className="container">
+      <h1 className='multi'>
+        Application For Job Post
+      </h1>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="name">Name</label>
@@ -108,6 +111,9 @@ const ContactForm = () => {
             accept=".pdf,.doc,.docx"
             required
           />
+          <a href={urlLink} download={filename}>
+          <button className='btn btn-primary'>Download</button>
+          </a>
         </div>
         <button type="submit" className="btn btn-primary">
           Submit
