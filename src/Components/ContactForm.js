@@ -91,9 +91,6 @@ const ContactForm = (id, setId) => {
             accept=".pdf,.doc,.docx"
             required
           />
-          <a href={urlLink} download={filename}>
-          <button className='btn btn-primary'>Download</button>
-          </a>
         </div>
         <button type="submit" className="btn btn-primary">
           Submit
