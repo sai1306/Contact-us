@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 function Data(props){
-    console.log(props);
     return(
         <>
          <div className="p-5 table-responsive">
